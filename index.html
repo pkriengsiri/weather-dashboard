@@ -12,7 +12,11 @@
       integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
       crossorigin="anonymous"
     />
-    <link rel="shortcut icon" href="./assets/images/favicon.ico" type="image/x-icon">
+    <link
+      rel="shortcut icon"
+      href="./assets/images/favicon.ico"
+      type="image/x-icon"
+    />
     <link rel="stylesheet" href="./assets/css/style.css" />
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
@@ -23,7 +27,6 @@
       src="https://kit.fontawesome.com/ae9c07c596.js"
       crossorigin="anonymous"
     ></script>
-    
   </head>
   <body>
     <!-- Navbar -->
@@ -62,22 +65,63 @@
             </form>
           </div>
           <div class="row">
-            <p>List of searched cities will go here</p>
+            <h4>Previous Searches</h4>
+            <div class="btn-group-vertical">
+                <button type="button" class="btn btn-info">Info</button>
+                <button type="button" class="btn btn-info">Info</button>
+                <button type="button" class="btn btn-info">Info</button>
+                <button type="button" class="btn btn-info">Info</button>
+                <button type="button" class="btn btn-info">Info</button>
+            </div>
           </div>
         </sidebar>
         <!-- Main -->
         <main class="col-8">
+          <!-- Current weather -->
           <div class="row border border-dark m-2 p-2">
-            <h1 id="city-name">
-              Atlanta<span id="date">(12/17/2020)</span>
-            </h1>
+            <h1 id="city-name">Atlanta<span id="date">(12/17/2020)</span></h1>
             <p>Temperature: <span id="temperature"></span></p>
             <p>Humidity: <span id="humidity"></span></p>
             <p>Wind-Speed: <span id="wind-speed"></span></p>
             <p>UV Index: <span id="uv-index"></span></p>
           </div>
+          <!-- 5-day forecast -->
           <div class="row m-1">
-            <p>Forecast will go here</p>
+            <div class="col-12">
+              <div class="row"><h1>5-day Forecast:</h1></div>
+              <div class="row">
+                <div class="col bg-primary mx-2 rounded">
+                  <h3>Date</h3>
+                  <img />
+                  <p>Temp:</p>
+                  <p>Humidity:</p>
+                </div>
+                <div class="col bg-primary mx-2 rounded">
+                  <h3>Date</h3>
+                  <img />
+                  <p>Temp:</p>
+                  <p>Humidity:</p>
+                </div>
+                <div class="col bg-primary mx-2 rounded">
+                  <h3>Date</h3>
+                  <img />
+                  <p>Temp:</p>
+                  <p>Humidity:</p>
+                </div>
+                <div class="col bg-primary mx-2 rounded">
+                  <h3>Date</h3>
+                  <img />
+                  <p>Temp:</p>
+                  <p>Humidity:</p>
+                </div>
+                <div class="col bg-primary mx-2 rounded">
+                  <h3>Date</h3>
+                  <img />
+                  <p>Temp:</p>
+                  <p>Humidity:</p>
+                </div>
+              </div>
+            </div>
           </div>
         </main>
       </div>
