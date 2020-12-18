@@ -36,7 +36,7 @@ $(document).ready(function () {
   // Get and set the UV index
   function getUVIndex(lat, lon) {
     var queryURL =
-      "http://api.openweathermap.org/data/2.5/uvi?lat=" +
+      "https://api.openweathermap.org/data/2.5/uvi?lat=" +
       lat +
       "&lon=" +
       lon +
