@@ -48,7 +48,13 @@
                   />
                 </div>
                 <div class="col-sm-2 p-0">
-                  <button type="submit" class="btn btn-primary bi bi-search" id="search"><span class="fas fa-search"></span></button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary bi bi-search"
+                    id="search"
+                  >
+                    <span class="fas fa-search"></span>
+                  </button>
                 </div>
               </div>
             </form>
@@ -59,11 +65,13 @@
         </sidebar>
         <!-- Main -->
         <main class="col-8">
-          <div class="row border border-dark m-2">
-            <h1 id="city-name">Atlanta<span class="date">(12/17/2020)</span></h1>
-            <p>Temperature: <span id="temperature"></span>°F</p>
+          <div class="row border border-dark m-2 p-2">
+            <h1 id="city-name">
+              Atlanta<span id="date">(12/17/2020)</span>
+            </h1>
+            <p>Temperature: <span id="temperature"></span></p>
             <p>Humidity: <span id="humidity"></span></p>
-            <p>Wind-Speed<span id="wind-speed"></span></p>
+            <p>Wind-Speed: <span id="wind-speed"></span></p>
             <p>UV Index: <span id="uv-index"></span></p>
           </div>
           <div class="row m-1">
@@ -74,6 +82,5 @@
     </div>
 
     <script src="./assets/scripts/script.js"></script>
-    <script type="text/javascript"></script>
   </body>
 </html>
