@@ -12,6 +12,7 @@ $(document).ready(function () {
 
   // Display the current weather
   function displayCurrentWeather() {
+    $("#current-weather").empty();
     var queryURL =
       "https://api.openweathermap.org/data/2.5/weather?q=" +
       city +
@@ -24,7 +25,38 @@ $(document).ready(function () {
     }).then(function (response) {
       // Print current weather data
       console.log(queryURL);
-      $("#city-name").text(response.name);
+      console.log(response);
+      
+      // Create and append heading
+      var h1El = $("<h1>");
+      var date = new Date(response.dt * 1000);
+      var dateString = "(" + date.toLocaleDateString() + ")";
+      h1El.text(response.name+ " "+dateString);
+      var imgEl = $("<img>");
+      imgEl.attr(
+        "src",
+        "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png"
+      );
+      h1El.append(imgEl);
+      $("#current-weather").append(h1El);
+
+      //Create and append temperature
+      var tempEl = $("<p>")
+      tempEl.text("Temperature: "+response.main.temp + "°F");
+      $("#current-weather").append(tempEl);
+      
+      //Create and append humidity
+      var humidityEl = $("<p>")
+      humidityEl.text("Humidity: "+response.main.humidity);
+      $("#current-weather").append(humidityEl);
+
+      //Create and append wind speed
+      var windSpeedEl = $("<p>")
+      windSpeedEl.text("Wind Speed "+response.wind.speed + " mph, Direction: " + response.wind.deg + "°");
+      $("#current-weather").append(windSpeedEl);
+      //Call function to create and append UV index
+      
+
       $("#temperature").text(response.main.temp + "°F");
       $("#humidity").text(response.main.humidity);
       $("#wind-speed").text(
@@ -50,7 +82,27 @@ $(document).ready(function () {
       method: "GET",
     }).then(function (response) {
       console.log(queryURL);
-      $("#uv-index").text(response.value);
+
+      var UVIndex = response.value;
+      var UVEl = $("<p>")
+      UVEl.text("UV Index: ");
+      var UVSpan = $("<span>");
+      UVSpan.text(UVIndex);
+      UVSpan.addClass("shadow p-2");
+      if(UVIndex < 3) {
+        UVSpan.attr("id","uv-green");
+      } else if (UVIndex < 6) {
+        UVSpan.attr("id","uv-yellow");
+      } else if (UVIndex < 8) {
+        UVSpan.attr("id","uv-orange");
+      } else if (UVIndex < 11) {
+        UVSpan.attr("id","uv-red");
+      } else {
+        UVSpan.attr("id","uv-purple");
+      }
+      UVEl.append(UVSpan);
+      $("#current-weather").append(UVEl);
+      
     });
   }
 
@@ -62,15 +114,14 @@ $(document).ready(function () {
       lon +
       "&exclude=current,minutely,hourly,alerts&units=imperial&appid=" +
       APIKey;
-      
-      $.ajax({
-        url: queryURL,
-        method: "GET",
-      }).then(function (response) {
-        console.log(queryURL);
-        console.log(response);
-      });
 
+    $.ajax({
+      url: queryURL,
+      method: "GET",
+    }).then(function (response) {
+      console.log(queryURL);
+      console.log(response);
+    });
   }
 
   // FUNCTION CALLS
@@ -120,7 +171,7 @@ $(document).ready(function () {
 //      Check to make sure item is not already in array (toLowerCase!!!)
 //      Call display weather with user input as parameter
 //      Create new button for search history with user input as the text
-//      Prepend the button    
+//      Prepend the button
 //      For search list:
 //          Create class for buttons
 //          Create an event listener to look for a click on these buttons
@@ -133,4 +184,4 @@ $(document).ready(function () {
 //      Call function to create the buttons:
 //          Check the length of the array and remove items if limit reached
 //          .shift() to remove first item, .push() adds to end, .pop() removes last element, unshift() adds to the beginning
-//          
+//
