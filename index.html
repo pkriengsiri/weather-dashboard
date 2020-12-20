@@ -43,12 +43,12 @@
         <sidebar class="col-4 bg-light">
           <!-- Search form   -->
           <div class="row">
-            <form>
+            <form id="search">
               <h1>Search for a city:</h1>
               <div class="row mb-3">
                 <div class="col-sm-10 pe-0 pr-0">
                   <input
-                    type="password"
+                    type="text"
                     class="form-control"
                     id="search-input"
                   />
@@ -57,7 +57,7 @@
                   <button
                     type="submit"
                     class="btn btn-primary bi bi-search"
-                    id="search"
+                    id="search-button"
                   >
                     <span class="fas fa-search"></span>
                   </button>
@@ -66,63 +66,28 @@
             </form>
           </div>
           <!-- Previous searches -->
-          <div class="row">
+          <div class="row d-none">
             <h4>Previous Searches</h4>
             <div class="btn-group-vertical">
-                <button type="button" class="btn btn-info">Info</button>
-                <button type="button" class="btn btn-info">Info</button>
-                <button type="button" class="btn btn-info">Info</button>
-                <button type="button" class="btn btn-info">Info</button>
-                <button type="button" class="btn btn-info">Info</button>
+              <button type="button" class="btn btn-info">Info</button>
+              <button type="button" class="btn btn-info">Info</button>
+              <button type="button" class="btn btn-info">Info</button>
+              <button type="button" class="btn btn-info">Info</button>
+              <button type="button" class="btn btn-info">Info</button>
             </div>
           </div>
         </sidebar>
         <!-- Main -->
-        <main class="col-8">
+        <main class="col-8" id="weather-display">
           <!-- Current weather -->
-          <div class="row border border-light shadow m-2 p-3 rounded" id="current-weather">
-            <!-- <h1 id="city-name">Atlanta<span id="date">(12/17/2020)</span></h1>
-            <p>Temperature: <span id="temperature"></span></p>
-            <p>Humidity: <span id="humidity"></span></p>
-            <p>Wind-Speed: <span id="wind-speed"></span></p>
-            <p>UV Index: <span id="uv-index"></span></p> -->
+          <div
+            class="row border border-light shadow m-2 p-3 rounded d-none"
+            id="current-weather"
+          >
           </div>
           <!-- 5-day forecast -->
           <div class="row m-1">
-            <div class="col-12">
-              <div class="row"><h1>5-day Forecast:</h1></div>
-              <div class="row">
-                <div class="col bg-primary mx-2 text-white rounded">
-                  <h3>Date</h3>
-                  <img />
-                  <p>Temp:</p>
-                  <p>Humidity:</p>
-                </div>
-                <div class="col bg-primary mx-2 text-white rounded">
-                  <h3>Date</h3>
-                  <img />
-                  <p>Temp:</p>
-                  <p>Humidity:</p>
-                </div>
-                <div class="col bg-primary mx-2 text-white rounded">
-                  <h3>Date</h3>
-                  <img />
-                  <p>Temp:</p>
-                  <p>Humidity:</p>
-                </div>
-                <div class="col bg-primary mx-2 text-white rounded">
-                  <h3>Date</h3>
-                  <img />
-                  <p>Temp:</p>
-                  <p>Humidity:</p>
-                </div>
-                <div class="col bg-primary mx-2 text-white rounded">
-                  <h3>Date</h3>
-                  <img />
-                  <p>Temp:</p>
-                  <p>Humidity:</p>
-                </div>
-              </div>
+            <div class="col-12" id="forecast-section">
             </div>
           </div>
         </main>

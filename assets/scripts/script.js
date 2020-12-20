@@ -6,12 +6,14 @@ $(document).ready(function () {
   var city = "Atlanta";
   var currentLat;
   var currentLong;
+  var searchedCities = [];
 
   // FUNCTION DEFINITIONS
   // Initialize the page
 
   // Display the current weather
   function displayCurrentWeather() {
+
     $("#current-weather").empty();
     var queryURL =
       "https://api.openweathermap.org/data/2.5/weather?q=" +
@@ -23,39 +25,51 @@ $(document).ready(function () {
       url: queryURL,
       method: "GET",
     }).then(function (response) {
-      // Print current weather data
-      console.log(queryURL);
-      console.log(response);
+      //Unhide the section
+      $("#current-weather").removeClass("d-none");
+
+      // Add city to array or reorder
+      addCityToList(city);
       
+      // Print current weather data
       // Create and append heading
       var h1El = $("<h1>");
       var date = new Date(response.dt * 1000);
       var dateString = "(" + date.toLocaleDateString() + ")";
-      h1El.text(response.name+ " "+dateString);
+      h1El.text(response.name + " " + dateString);
       var imgEl = $("<img>");
       imgEl.attr(
         "src",
-        "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png"
+        "http://openweathermap.org/img/wn/" +
+          response.weather[0].icon +
+          "@2x.png"
       );
       h1El.append(imgEl);
       $("#current-weather").append(h1El);
+      var hrEL = $("<hr>");
+      $("#current-weather").append(hrEL);
 
       //Create and append temperature
-      var tempEl = $("<p>")
-      tempEl.text("Temperature: "+response.main.temp + "°F");
+      var tempEl = $("<p>");
+      tempEl.text("Temperature: " + response.main.temp + "°F");
       $("#current-weather").append(tempEl);
-      
+
       //Create and append humidity
-      var humidityEl = $("<p>")
-      humidityEl.text("Humidity: "+response.main.humidity);
+      var humidityEl = $("<p>");
+      humidityEl.text("Humidity: " + response.main.humidity);
       $("#current-weather").append(humidityEl);
 
       //Create and append wind speed
-      var windSpeedEl = $("<p>")
-      windSpeedEl.text("Wind Speed "+response.wind.speed + " mph, Direction: " + response.wind.deg + "°");
+      var windSpeedEl = $("<p>");
+      windSpeedEl.text(
+        "Wind Speed " +
+          response.wind.speed +
+          " mph, Direction: " +
+          response.wind.deg +
+          "°"
+      );
       $("#current-weather").append(windSpeedEl);
       //Call function to create and append UV index
-      
 
       $("#temperature").text(response.main.temp + "°F");
       $("#humidity").text(response.main.humidity);
@@ -81,32 +95,32 @@ $(document).ready(function () {
       url: queryURL,
       method: "GET",
     }).then(function (response) {
-      console.log(queryURL);
-
       var UVIndex = response.value;
-      var UVEl = $("<p>")
+      var UVEl = $("<p>");
       UVEl.text("UV Index: ");
       var UVSpan = $("<span>");
       UVSpan.text(UVIndex);
       UVSpan.addClass("shadow p-2");
-      if(UVIndex < 3) {
-        UVSpan.attr("id","uv-green");
+      if (UVIndex < 3) {
+        UVSpan.attr("id", "uv-green");
       } else if (UVIndex < 6) {
-        UVSpan.attr("id","uv-yellow");
+        UVSpan.attr("id", "uv-yellow");
       } else if (UVIndex < 8) {
-        UVSpan.attr("id","uv-orange");
+        UVSpan.attr("id", "uv-orange");
       } else if (UVIndex < 11) {
-        UVSpan.attr("id","uv-red");
+        UVSpan.attr("id", "uv-red");
       } else {
-        UVSpan.attr("id","uv-purple");
+        UVSpan.attr("id", "uv-purple");
       }
       UVEl.append(UVSpan);
       $("#current-weather").append(UVEl);
-      
     });
   }
 
   function displayForecast(lat, lon) {
+    // Clear the div
+    $("#forecast-section").empty();
+
     var queryURL =
       "https://api.openweathermap.org/data/2.5/onecall?lat=" +
       lat +
@@ -119,15 +133,92 @@ $(document).ready(function () {
       url: queryURL,
       method: "GET",
     }).then(function (response) {
-      console.log(queryURL);
-      console.log(response);
+      //add the title row
+      // add the h1
+      // append the title row
+      var titleRow = $("<div>");
+      titleRow.addClass("row");
+      var h1El = $("<h1>");
+      h1El.text("5-day Forecast:");
+      titleRow.append(h1El);
+      $("#forecast-section").append(titleRow);
+
+      // add the second row
+      var forecastRow = $("<div>");
+      forecastRow.addClass("row");
+
+      // In a for loop
+      for (var i = 1; i < 6; i++) {
+        //Create the column
+        var colEl = $("<div>");
+        colEl.addClass("col bg-primary mx-2 text-white rounded");
+        //Create and append the h3
+        var date = new Date(response.daily[i].dt * 1000);
+        var h3El = $("<h3>").text(date.toLocaleDateString());
+        colEl.append(h3El);
+        //Create and append the img icon
+        var imgEl = $("<img>");
+        imgEl.attr(
+          "src",
+          "http://openweathermap.org/img/wn/" +
+            response.daily[i].weather[0].icon +
+            "@2x.png"
+        );
+        colEl.append(imgEl);
+        //Create and append the temp <p>
+        var tempMaxEl = $("<p>");
+        tempMaxEl.text("High: "+response.daily[i].temp.max + "°F")
+        colEl.append(tempMaxEl);
+        var tempMinEl = $("<p>");
+        tempMinEl.text("Low: "+response.daily[i].temp.min + "°F")
+        colEl.append(tempMinEl);
+        //Create and append the humidity <p>
+        humidityEl = $("<p>");
+        humidityEl.text("Humidity: "+response.daily[i].humidity)
+        colEl.append(humidityEl);
+        //Append the column
+        forecastRow.append(colEl);
+      }
+      
+      //Append the row
+      $("#forecast-section").append(forecastRow);
     });
   }
 
+  function searchCity(event) {
+    event.preventDefault();
+    city = $("#search-input").val();
+    displayCurrentWeather();
+  }
+
+  function addCityToList(city) {
+    //Check to see if the city is in the list
+    if(searchedCities.indexOf(city.toLowerCase()) === -1) {
+      // Check to see if the list has ten 10 entries
+      if(searchedCities.length === 10) {
+        // Remove the last item then add the current city to the beginning of the array
+        searchedCities.pop();
+        searchedCities.unshift(city.toLowerCase());
+      } else {
+        searchedCities.unshift(city.toLowerCase());
+      }
+    } else {
+      // Remove the item from the list and put it at the beginning
+      var index = searchedCities.indexOf(city.toLowerCase());
+      searchedCities.splice(index,1);
+      searchedCities.unshift(city.toLowerCase());
+    }
+    console.log(searchedCities);
+  }
+
+
+
   // FUNCTION CALLS
-  displayCurrentWeather();
+  //displayCurrentWeather();
 
   // EVENT HANDLERS
+  $("#search").on("submit",searchCity);
+
 });
 
 // GIVEN a weather dashboard with form inputs
