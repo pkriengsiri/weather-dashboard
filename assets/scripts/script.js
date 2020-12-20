@@ -35,7 +35,7 @@ $(document).ready(function () {
         $("#current-weather").empty();
 
         //Clear 404 errors
-        $("#404-message").addClass("d-none");
+        $("#message-404").addClass("d-none");
 
         // Add city to array or reorder
         addCityToList(city);
@@ -90,7 +90,7 @@ $(document).ready(function () {
       function (response) {
         var responseText = JSON.parse(response.responseText);
         if (responseText.cod === "404") {
-          $("#404-message").removeClass("d-none");
+          $("#message-404").removeClass("d-none");
         }
       }
     );
