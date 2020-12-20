@@ -228,14 +228,9 @@ $(document).ready(function () {
       buttonEl.attr("type", "button");
       buttonEl.addClass("list-group-item list-group-item-action");
       var city = searchedCities[i];
-      console.log("City: "+city);
       var citySplit = city.split(" ");
-      console.log(citySplit);
       for (var j = 0; j < citySplit.length; j++) {
-        console.log("City split length: "+citySplit.length);
         citySplit[j] = citySplit[j][0].toUpperCase() + citySplit[j].substr(1);
-        console.log("i "+j)
-        console.log(citySplit[j]);
       }
       city = citySplit.join(" ");
       buttonEl.text(city);
@@ -243,10 +238,16 @@ $(document).ready(function () {
     }
   }
 
+  function displayPreviousSearch() {
+    city = $(this)[0].innerText;
+    displayCurrentWeather();
+  }
+
   // FUNCTION CALLS
   init();
 
   // EVENT HANDLERS
   $("#search").on("submit", searchCity);
+  $("#search-buttons").on("click","button",displayPreviousSearch)
 });
 
