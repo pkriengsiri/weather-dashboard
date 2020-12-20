@@ -104,7 +104,7 @@ $(document).ready(function () {
       UVEl.text("UV Index: ");
       var UVSpan = $("<span>");
       UVSpan.text(UVIndex);
-      UVSpan.addClass("shadow p-2");
+      UVSpan.addClass("p-2 rounded");
       if (UVIndex < 3) {
         UVSpan.attr("id", "uv-green");
       } else if (UVIndex < 6) {
@@ -166,7 +166,7 @@ $(document).ready(function () {
           "src",
           "http://openweathermap.org/img/wn/" +
             response.daily[i].weather[0].icon +
-            "@2x.png"
+            ".png"
         );
         colEl.append(imgEl);
         //Create and append the temp <p>
