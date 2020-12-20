@@ -3,7 +3,7 @@ $(document).ready(function () {
 
   // JS VARIABLES
   var APIKey = "c120eb4512edae3031f1a647615f6499";
-  var city = "Atlanta";
+  var city = "";
   var currentLat;
   var currentLong;
   var searchedCities = [];
@@ -13,7 +13,6 @@ $(document).ready(function () {
 
   // Display the current weather
   function displayCurrentWeather() {
-
     $("#current-weather").empty();
     var queryURL =
       "https://api.openweathermap.org/data/2.5/weather?q=" +
@@ -30,7 +29,8 @@ $(document).ready(function () {
 
       // Add city to array or reorder
       addCityToList(city);
-      
+      displaySearchButtons();
+
       // Print current weather data
       // Create and append heading
       var h1El = $("<h1>");
@@ -70,12 +70,6 @@ $(document).ready(function () {
       );
       $("#current-weather").append(windSpeedEl);
       //Call function to create and append UV index
-
-      $("#temperature").text(response.main.temp + "°F");
-      $("#humidity").text(response.main.humidity);
-      $("#wind-speed").text(
-        response.wind.speed + " mph, Direction: " + response.wind.deg + "°"
-      );
       getUVIndex(response.coord.lat, response.coord.lon);
       displayForecast(response.coord.lat, response.coord.lon);
     });
@@ -151,7 +145,7 @@ $(document).ready(function () {
       for (var i = 1; i < 6; i++) {
         //Create the column
         var colEl = $("<div>");
-        colEl.addClass("col bg-primary mx-2 text-white rounded");
+        colEl.addClass("col bg-primary mx-2 text-white shadow rounded");
         //Create and append the h3
         var date = new Date(response.daily[i].dt * 1000);
         var h3El = $("<h3>").text(date.toLocaleDateString());
@@ -167,19 +161,19 @@ $(document).ready(function () {
         colEl.append(imgEl);
         //Create and append the temp <p>
         var tempMaxEl = $("<p>");
-        tempMaxEl.text("High: "+response.daily[i].temp.max + "°F")
+        tempMaxEl.text("High: " + response.daily[i].temp.max + "°F");
         colEl.append(tempMaxEl);
         var tempMinEl = $("<p>");
-        tempMinEl.text("Low: "+response.daily[i].temp.min + "°F")
+        tempMinEl.text("Low: " + response.daily[i].temp.min + "°F");
         colEl.append(tempMinEl);
         //Create and append the humidity <p>
         humidityEl = $("<p>");
-        humidityEl.text("Humidity: "+response.daily[i].humidity)
+        humidityEl.text("Humidity: " + response.daily[i].humidity);
         colEl.append(humidityEl);
         //Append the column
         forecastRow.append(colEl);
       }
-      
+
       //Append the row
       $("#forecast-section").append(forecastRow);
     });
@@ -193,9 +187,9 @@ $(document).ready(function () {
 
   function addCityToList(city) {
     //Check to see if the city is in the list
-    if(searchedCities.indexOf(city.toLowerCase()) === -1) {
+    if (searchedCities.indexOf(city.toLowerCase()) === -1) {
       // Check to see if the list has ten 10 entries
-      if(searchedCities.length === 10) {
+      if (searchedCities.length === 10) {
         // Remove the last item then add the current city to the beginning of the array
         searchedCities.pop();
         searchedCities.unshift(city.toLowerCase());
@@ -205,74 +199,43 @@ $(document).ready(function () {
     } else {
       // Remove the item from the list and put it at the beginning
       var index = searchedCities.indexOf(city.toLowerCase());
-      searchedCities.splice(index,1);
+      searchedCities.splice(index, 1);
       searchedCities.unshift(city.toLowerCase());
     }
-    console.log(searchedCities);
+    //console.log(searchedCities);
   }
 
-
+  // Display the previous searches section
+  function displaySearchButtons() {
+    // Unhide the section
+    $("#previous-searches").removeClass("d-none");
+    $("#search-buttons").empty();
+    
+    // Print the list
+    for (var i = 0; i < searchedCities.length; i++) {
+      var buttonEl = $("<button>");
+      buttonEl.attr("type", "button");
+      buttonEl.addClass("list-group-item list-group-item-action");
+      var city = searchedCities[i];
+      console.log("City: "+city);
+      var citySplit = city.split(" ");
+      console.log(citySplit);
+      for (var j = 0; j < citySplit.length; j++) {
+        console.log("City split length: "+citySplit.length);
+        citySplit[j] = citySplit[j][0].toUpperCase() + citySplit[j].substr(1);
+        console.log("i "+j)
+        console.log(citySplit[j]);
+      }
+      city = citySplit.join(" ");
+      buttonEl.text(city);
+      $("#search-buttons").append(buttonEl);
+    }
+  }
 
   // FUNCTION CALLS
-  //displayCurrentWeather();
+  
 
   // EVENT HANDLERS
-  $("#search").on("submit",searchCity);
-
+  $("#search").on("submit", searchCity);
 });
 
-// GIVEN a weather dashboard with form inputs
-//      Start with with the weather dashboard display loaded on html
-//      Display has:
-//      -Navbar
-//      -Two columns
-//          -Sidebar with two row (search for city/ list of cities)
-//          -Main with two rows (current weather for displayed city/ five day forecast)
-//
-// WHEN I search for a city
-// THEN I am presented with current and future conditions for that city and that city is added to the search history
-//      Create a function to handle the search
-//          Create and id for the search field and search button
-//          Create and event listener for form submission (on the form or the button??)
-//          Create a callback function for the event listener
-//          Prevent default submit behavior
-//          Get the text from the input field
-//          Store the text in an array of previously searched cities
-//          Store the text in localStorage as the last searched city
-//
-//
-//
-//
-// WHEN I view current weather conditions for that city
-// THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
-//
-// WHEN I view the UV index
-// THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
-//
-// WHEN I view future weather conditions for that city
-// THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
-//      Create a function to display the five-day forecast
-//          Generate the query URL
-//          Get the object values for each forecast block
-//
-// WHEN I click on a city in the search history
-// THEN I am again presented with current and future conditions for that city
-//      Create a text area and button
-//      Take input from text area and store in array for searched cities
-//      Check to make sure item is not already in array (toLowerCase!!!)
-//      Call display weather with user input as parameter
-//      Create new button for search history with user input as the text
-//      Prepend the button
-//      For search list:
-//          Create class for buttons
-//          Create an event listener to look for a click on these buttons
-//          Call display weather function with the city
-// WHEN I open the weather dashboard
-// THEN I am presented with the last searched city forecast
-//      Array of cities are stored as a single key/ value in local storage
-//      When page is loaded, if there's nothing in local storage set
-//      ex: var storedCities = JSON.parse(localStorage.getItem("something")) || [];
-//      Call function to create the buttons:
-//          Check the length of the array and remove items if limit reached
-//          .shift() to remove first item, .push() adds to end, .pop() removes last element, unshift() adds to the beginning
-//
