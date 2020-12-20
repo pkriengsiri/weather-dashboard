@@ -153,7 +153,7 @@ $(document).ready(function () {
       // append the title row
       var titleRow = $("<div>");
       titleRow.addClass("row");
-      var h1El = $("<h1>");
+      var h1El = $("<h2>");
       h1El.text("5-day Forecast:");
       titleRow.append(h1El);
       $("#forecast-section").append(titleRow);
@@ -166,7 +166,7 @@ $(document).ready(function () {
       for (var i = 1; i < 6; i++) {
         //Create the column
         var colEl = $("<div>");
-        colEl.addClass("col bg-primary mx-2 text-white shadow rounded");
+        colEl.addClass("col bg-primary mx-2 text-white shadow rounded mb-2");
         //Create and append the h3
         var date = new Date(response.daily[i].dt * 1000);
         var h3El = $("<h3>").text(date.toLocaleDateString());
