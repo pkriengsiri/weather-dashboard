@@ -40,9 +40,9 @@
     <div class="container-fluid">
       <div class="row">
         <!-- Sidebar -->
-        <sidebar class="col-4 bg-light">
+        <sidebar class="col-4 bg-light" id="sidebar">
           <!-- Search form   -->
-          <div class="row">
+          <div class="row" id="search-area">
             <form id="search">
               <h1>Search for a city:</h1>
               <div class="row mb-3">
@@ -64,6 +64,7 @@
                 </div>
               </div>
             </form>
+            <p class="d-none" id="404-message">The city was not found.  Please check the name and spelling.</p>
           </div>
           <!-- Previous searches -->
           <div class="row d-none" id="previous-searches">

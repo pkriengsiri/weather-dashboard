@@ -11,7 +11,7 @@ $(document).ready(function () {
   // FUNCTION DEFINITIONS
   // Initialize the page
   function init() {
-    if(searchedCities[0] !== undefined) {
+    if (searchedCities[0] !== undefined) {
       city = searchedCities[0];
       displayCurrentWeather();
     }
@@ -19,7 +19,7 @@ $(document).ready(function () {
 
   // Display the current weather
   function displayCurrentWeather() {
-    $("#current-weather").empty();
+    $("#current-weather").removeClass("d-none");
     var queryURL =
       "https://api.openweathermap.org/data/2.5/weather?q=" +
       city +
@@ -29,60 +29,71 @@ $(document).ready(function () {
     $.ajax({
       url: queryURL,
       method: "GET",
-    }).then(function (response) {
-      //Unhide the section
-      $("#current-weather").removeClass("d-none");
+    }).then(
+      function (response) {
+        //Empty the section
+        $("#current-weather").empty();
 
-      // Add city to array or reorder
-      addCityToList(city);
-      displaySearchButtons();
+        //Clear 404 errors
+        $("#404-message").addClass("d-none");
 
-      // Add array to localStorage
-      localStorage.setItem("searchedCities",JSON.stringify(searchedCities));
+        // Add city to array or reorder
+        addCityToList(city);
+        displaySearchButtons();
 
-      // Print current weather data
-      // Create and append heading
-      var h1El = $("<h1>");
-      var date = new Date(response.dt * 1000);
-      var dateString = "(" + date.toLocaleDateString() + ")";
-      h1El.text(response.name + " " + dateString);
-      var imgEl = $("<img>");
-      imgEl.attr(
-        "src",
-        "http://openweathermap.org/img/wn/" +
-          response.weather[0].icon +
-          "@2x.png"
-      );
-      h1El.append(imgEl);
-      $("#current-weather").append(h1El);
-      var hrEL = $("<hr>");
-      $("#current-weather").append(hrEL);
+        // Add array to localStorage
+        localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
 
-      //Create and append temperature
-      var tempEl = $("<p>");
-      tempEl.text("Temperature: " + response.main.temp + "°F");
-      $("#current-weather").append(tempEl);
+        // Print current weather data
+        // Create and append heading
+        var h1El = $("<h1>");
+        var date = new Date(response.dt * 1000);
+        var dateString = "(" + date.toLocaleDateString() + ")";
+        h1El.text(response.name + " " + dateString);
+        var imgEl = $("<img>");
+        imgEl.attr(
+          "src",
+          "http://openweathermap.org/img/wn/" +
+            response.weather[0].icon +
+            "@2x.png"
+        );
+        h1El.append(imgEl);
+        $("#current-weather").append(h1El);
+        var hrEL = $("<hr>");
+        $("#current-weather").append(hrEL);
 
-      //Create and append humidity
-      var humidityEl = $("<p>");
-      humidityEl.text("Humidity: " + response.main.humidity);
-      $("#current-weather").append(humidityEl);
+        //Create and append temperature
+        var tempEl = $("<p>");
+        tempEl.text("Temperature: " + response.main.temp + "°F");
+        $("#current-weather").append(tempEl);
 
-      //Create and append wind speed
-      var windSpeedEl = $("<p>");
-      windSpeedEl.text(
-        "Wind Speed " +
-          response.wind.speed +
-          " mph, Direction: " +
-          response.wind.deg +
-          "°"
-      );
-      $("#current-weather").append(windSpeedEl);
+        //Create and append humidity
+        var humidityEl = $("<p>");
+        humidityEl.text("Humidity: " + response.main.humidity);
+        $("#current-weather").append(humidityEl);
 
-      //Call function to create and append UV index
-      getUVIndex(response.coord.lat, response.coord.lon);
-      displayForecast(response.coord.lat, response.coord.lon);
-    });
+        //Create and append wind speed
+        var windSpeedEl = $("<p>");
+        windSpeedEl.text(
+          "Wind Speed " +
+            response.wind.speed +
+            " mph, Direction: " +
+            response.wind.deg +
+            "°"
+        );
+        $("#current-weather").append(windSpeedEl);
+
+        //Call function to create and append UV index
+        getUVIndex(response.coord.lat, response.coord.lon);
+        displayForecast(response.coord.lat, response.coord.lon);
+      },
+      function (response) {
+        var responseText = JSON.parse(response.responseText);
+        if (responseText.cod === "404") {
+          $("#404-message").removeClass("d-none");
+        }
+      }
+    );
   }
 
   // Get and set the UV index
@@ -221,7 +232,7 @@ $(document).ready(function () {
     // Unhide the section
     $("#previous-searches").removeClass("d-none");
     $("#search-buttons").empty();
-    
+
     // Print the list
     for (var i = 0; i < searchedCities.length; i++) {
       var buttonEl = $("<button>");
@@ -248,6 +259,5 @@ $(document).ready(function () {
 
   // EVENT HANDLERS
   $("#search").on("submit", searchCity);
-  $("#search-buttons").on("click","button",displayPreviousSearch)
+  $("#search-buttons").on("click", "button", displayPreviousSearch);
 });
-
