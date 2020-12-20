@@ -6,10 +6,16 @@ $(document).ready(function () {
   var city = "";
   var currentLat;
   var currentLong;
-  var searchedCities = [];
+  var searchedCities = JSON.parse(localStorage.getItem("searchedCities")) || [];
 
   // FUNCTION DEFINITIONS
   // Initialize the page
+  function init() {
+    if(searchedCities[0] !== undefined) {
+      city = searchedCities[0];
+      displayCurrentWeather();
+    }
+  }
 
   // Display the current weather
   function displayCurrentWeather() {
@@ -30,6 +36,9 @@ $(document).ready(function () {
       // Add city to array or reorder
       addCityToList(city);
       displaySearchButtons();
+
+      // Add array to localStorage
+      localStorage.setItem("searchedCities",JSON.stringify(searchedCities));
 
       // Print current weather data
       // Create and append heading
@@ -69,6 +78,7 @@ $(document).ready(function () {
           "°"
       );
       $("#current-weather").append(windSpeedEl);
+
       //Call function to create and append UV index
       getUVIndex(response.coord.lat, response.coord.lon);
       displayForecast(response.coord.lat, response.coord.lon);
@@ -185,6 +195,7 @@ $(document).ready(function () {
     displayCurrentWeather();
   }
 
+  // Add new cities to the searchedCities array
   function addCityToList(city) {
     //Check to see if the city is in the list
     if (searchedCities.indexOf(city.toLowerCase()) === -1) {
@@ -233,7 +244,7 @@ $(document).ready(function () {
   }
 
   // FUNCTION CALLS
-  
+  init();
 
   // EVENT HANDLERS
   $("#search").on("submit", searchCity);
