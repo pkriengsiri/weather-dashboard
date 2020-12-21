@@ -64,7 +64,7 @@ $(document).ready(function () {
 
         //Create and append temperature
         var tempEl = $("<p>");
-        tempEl.text("Temperature: " + response.main.temp + "°F");
+        tempEl.text("Temperature: " + Math.floor(response.main.temp) + "°F");
         $("#current-weather").append(tempEl);
 
         //Create and append humidity
