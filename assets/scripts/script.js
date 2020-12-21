@@ -26,7 +26,8 @@ $(document).ready(function () {
       "&units=imperial&appid=" +
       APIKey;
 
-    $.ajax({
+    // Perform the API query
+      $.ajax({
       url: queryURL,
       method: "GET",
     }).then(
@@ -37,7 +38,7 @@ $(document).ready(function () {
         //Clear 404 errors
         $("#message-404").addClass("d-none");
 
-        // Add city to array or reorder
+        // Add city to array or reorder, the display the buttons
         addCityToList(city);
         displaySearchButtons();
 
@@ -106,7 +107,8 @@ $(document).ready(function () {
       "&appid=" +
       APIKey;
 
-    $.ajax({
+    // Perform the API query
+      $.ajax({
       url: queryURL,
       method: "GET",
     }).then(function (response) {
@@ -144,13 +146,13 @@ $(document).ready(function () {
       "&exclude=current,minutely,hourly,alerts&units=imperial&appid=" +
       APIKey;
 
+    // Perform the API query  
     $.ajax({
       url: queryURL,
       method: "GET",
     }).then(function (response) {
-      //add the title row
-      // add the h1
-      // append the title row
+      // Create and append the title row
+      // Create and append the h1
       var titleRow = $("<div>");
       titleRow.addClass("row");
       var h1El = $("<h2>");
@@ -158,22 +160,21 @@ $(document).ready(function () {
       titleRow.append(h1El);
       $("#forecast-section").append(titleRow);
 
-      // add the second row
+      // Add the second row
       var forecastRow = $("<div>");
       forecastRow.addClass("row");
 
       // In a for loop
       for (var i = 1; i < 6; i++) {
-        //Create the column
+        // Create the column
         var colEl = $("<div>");
         colEl.addClass("col bg-primary mx-2 text-white shadow rounded mb-2");
         colEl.attr("style","max-width: 10.5rem");
-        //colEl.attr("style","display: inline-block");
-        //Create and append the h3
+        // Create and append the h3
         var date = new Date(response.daily[i].dt * 1000);
         var h3El = $("<h3>").text(date.toLocaleDateString());
         colEl.append(h3El);
-        //Create and append the img icon
+        // Create and append the img icon
         var imgEl = $("<img>");
         imgEl.attr(
           "src",
@@ -226,7 +227,6 @@ $(document).ready(function () {
       searchedCities.splice(index, 1);
       searchedCities.unshift(city.toLowerCase());
     }
-    //console.log(searchedCities);
   }
 
   // Display the previous searches section
@@ -237,9 +237,12 @@ $(document).ready(function () {
 
     // Print the list
     for (var i = 0; i < searchedCities.length; i++) {
+      // Create button
       var buttonEl = $("<button>");
+      // Add button parameter and text
       buttonEl.attr("type", "button");
       buttonEl.addClass("list-group-item list-group-item-action");
+      //Convert lowercase city names to title case
       var city = searchedCities[i];
       var citySplit = city.split(" ");
       for (var j = 0; j < citySplit.length; j++) {
@@ -247,6 +250,7 @@ $(document).ready(function () {
       }
       city = citySplit.join(" ");
       buttonEl.text(city);
+      // Append the button
       $("#search-buttons").append(buttonEl);
     }
   }
