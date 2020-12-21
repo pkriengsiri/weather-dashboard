@@ -53,7 +53,7 @@ $(document).ready(function () {
         var imgEl = $("<img>");
         imgEl.attr(
           "src",
-          "http://openweathermap.org/img/wn/" +
+          "https://openweathermap.org/img/wn/" +
             response.weather[0].icon +
             "@2x.png"
         );
@@ -167,6 +167,8 @@ $(document).ready(function () {
         //Create the column
         var colEl = $("<div>");
         colEl.addClass("col bg-primary mx-2 text-white shadow rounded mb-2");
+        colEl.attr("style","max-width: 10.5rem");
+        //colEl.attr("style","display: inline-block");
         //Create and append the h3
         var date = new Date(response.daily[i].dt * 1000);
         var h3El = $("<h3>").text(date.toLocaleDateString());
@@ -175,17 +177,17 @@ $(document).ready(function () {
         var imgEl = $("<img>");
         imgEl.attr(
           "src",
-          "http://openweathermap.org/img/wn/" +
+          "https://openweathermap.org/img/wn/" +
             response.daily[i].weather[0].icon +
             ".png"
         );
         colEl.append(imgEl);
         //Create and append the temp <p>
         var tempMaxEl = $("<p>");
-        tempMaxEl.text("High: " + response.daily[i].temp.max + "°F");
+        tempMaxEl.text("High: " + Math.floor(response.daily[i].temp.max) + "°F");
         colEl.append(tempMaxEl);
         var tempMinEl = $("<p>");
-        tempMinEl.text("Low: " + response.daily[i].temp.min + "°F");
+        tempMinEl.text("Low: " + Math.floor(response.daily[i].temp.min) + "°F");
         colEl.append(tempMinEl);
         //Create and append the humidity <p>
         humidityEl = $("<p>");
